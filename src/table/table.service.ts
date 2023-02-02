@@ -12,13 +12,17 @@ export class TableService {
     return this.prisma.table.findMany();
   }
 
-  async findOne(id: string): Promise<Table> {
+  async findById(id: string): Promise<Table> {
     const record = await this.prisma.table.findUnique({ where: { id } });
 
     if (!record) {
+      throw new NotFoundException(`ID ${id}, não encontrado`);
     }
-    throw new NotFoundException(`ID ${id}, não encontrado`);
     return record;
+  }
+
+  async findOne(id: string): Promise<Table> {
+    return this.findById(id);
   }
 
   create(dto: CreateTableDto): Promise<Table> {
@@ -27,7 +31,9 @@ export class TableService {
     return this.prisma.table.create({ data });
   }
 
-  update(id: string, dto: UpdateTableDto): Promise<Table> {
+  async update(id: string, dto: UpdateTableDto): Promise<Table> {
+    await this.findById(id);
+
     const data: Partial<Table> = { ...dto };
 
     return this.prisma.table.update({
