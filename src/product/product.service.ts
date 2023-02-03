@@ -29,7 +29,7 @@ export class ProductService {
     return this.findById(id);
   }
 
-  create(dto: CreateProductDto): Promise<Product> {
+  async create(dto: CreateProductDto): Promise<Product> {
     const data: Product = { ...dto };
 
     return this.prisma.product.create({ data }).catch(this.handleError);

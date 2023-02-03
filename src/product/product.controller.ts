@@ -39,7 +39,7 @@ export class ProductController {
   @ApiOperation ({
     summary: 'Visualizar somente um produto',
   })
-  findOne(@Param('id') id: string): string {
+  findOne(@Param('id') id: string) {
     return this.productService.findOne(id);
   }
 
