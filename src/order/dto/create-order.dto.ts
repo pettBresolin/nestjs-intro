@@ -4,7 +4,7 @@ import { IsInt, IsPositive, IsUUID } from 'class-validator';
 export class CreateOrderDto {
   @IsUUID()
   @ApiProperty({
-    description: 'ID do usuário que está craindo o pedido',
+    description: 'ID do usuário que está criando o pedido',
     example: '15e3acc0-b9cc-47d2-9460-cc9bab1134cc',
   })
   userId: string;

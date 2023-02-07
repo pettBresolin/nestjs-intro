@@ -37,7 +37,7 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({
-    summary: 'Visualizar por um único usuário pelo ID',
+    summary: 'Visualizar um único usuário pelo ID',
   })
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
