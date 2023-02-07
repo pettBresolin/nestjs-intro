@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { table } from 'console';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Product } from 'src/product/entities/product.entity';
 import { handleError } from 'src/utils/handle-error.util';
@@ -50,14 +51,55 @@ export class OrderService {
         },
       })
       .catch(handleError);
-    return 'This action adds a new order';
   }
 
   findAll() {
-    return `This action returns all order`;
+    return this.prisma.order.findMany({
+      select: {
+        id: true,
+        table: {
+          select: {
+            number: true,
+          },
+        },
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        _count: {
+          select: {
+            products: true,
+          },
+        },
+      },
+    });
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} order`;
+    return this.prisma.order.findUnique({
+      where: { id },
+      include: {
+        user: {
+          select: {
+            name: true,
+          },
+        },
+        table: {
+          select: {
+            number: true,
+          },
+        },
+        products: {
+          select: {
+            id: true,
+            name: true,
+            price: true,
+            image: true,
+            description: true,
+          },
+        },
+      },
+    });
   }
 }
