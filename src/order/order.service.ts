@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
-import { table } from 'console';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { Product } from 'src/product/entities/product.entity';
 import { handleError } from 'src/utils/handle-error.util';
 import { CreateOrderDto } from './dto/create-order.dto';
 
@@ -23,9 +21,13 @@ export class OrderService {
         },
       },
       products: {
-        connect: createOrderDto.products.map((productId) => ({
-          id: productId,
-        })),
+        createMany: {
+          data: createOrderDto.products.map((createOrderProductDto) => ({
+            productId: createOrderProductDto.productId,
+            quantity: createOrderProductDto.quantity,
+            description: createOrderProductDto.description,
+          })),
+        },
       },
     };
     return this.prisma.order
@@ -45,7 +47,13 @@ export class OrderService {
           },
           products: {
             select: {
-              name: true,
+              quantity: true,
+              description: true,
+              product: {
+                select: {
+                  name: true,
+                },
+              },
             },
           },
         },
@@ -92,11 +100,15 @@ export class OrderService {
         },
         products: {
           select: {
-            id: true,
-            name: true,
-            price: true,
-            image: true,
-            description: true,
+            product: {
+              select: {
+                id: true,
+                name: true,
+                price: true,
+                image: true,
+                description: true,
+              },
+            },
           },
         },
       },
