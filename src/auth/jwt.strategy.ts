@@ -14,14 +14,14 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validade(payload: { nickname: string }) {
+  async validate(payload: { nickname: string }) {
     const user = await this.prisma.user.findUnique({
       where: { nickname: payload.nickname },
     });
 
     if (!user) {
       throw new UnauthorizedException(
-        'Ususário não exixte ou não está autenticado',
+        'Ususário não existe ou não está autenticado',
       );
     }
 
