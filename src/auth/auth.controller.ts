@@ -23,7 +23,7 @@ export class AuthController {
   @Get()
   @UseGuards(AuthGuard())
   @ApiOperation({
-    summary: 'Retorna o usuário autenticado no momento'
+    summary: 'Retorna o usuário autenticado no momento',
   })
   @ApiBearerAuth()
   profile() {
